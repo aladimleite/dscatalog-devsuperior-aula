@@ -3,6 +3,7 @@ package com.devsuperior.dscatalog.resources;
 //import java.util.ArrayList;
 import java.util.List;
 
+import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.services.CategoryService;
 
@@ -20,12 +21,8 @@ public class CategoryResource {
     private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-
-        //List<Category> list = new ArrayList<>();
-        //list.add(new Category(1L, "Books"));
-        //list.add(new Category(2L, "Eletronics"));
-        List<Category> list = service.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
     
