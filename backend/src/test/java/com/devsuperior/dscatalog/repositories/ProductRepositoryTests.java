@@ -10,6 +10,8 @@ import com.devsuperior.dscatalog.entities.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+
 @DataJpaTest
 public class ProductRepositoryTests {
 
@@ -28,5 +30,19 @@ public class ProductRepositoryTests {
 	    //3º
 	    Assertions.assertFalse(result.isPresent());	
     }
+
+    @Test
+    public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExist() {
     
+        long nonExistingId = 1000L;
+
+        // 3º [A]ssert
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
+
+            // 1º [A]rrange
+
+            // 2º [A]ct
+            repository.deleteById(nonExistingId);
+        });
+    }    
 }

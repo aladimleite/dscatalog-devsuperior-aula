@@ -1,8 +1,8 @@
 package com.devsuperior.dscatalog.services;
 
-import java.util.List;
+//import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.entities.Category;
@@ -19,7 +19,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @Service
@@ -59,7 +59,8 @@ public class CategoryService {
     @Transactional
     public CategoryDTO update(Long id, CategoryDTO dto) {
         try {
-            Category entity = repository.getOne(id);
+            //Category entity = repository.getOne(id);
+            Category entity = repository.getById(id);
             entity.setName(dto.getName());
             entity = repository.save(entity);
             return new CategoryDTO(entity);

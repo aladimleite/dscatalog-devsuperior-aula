@@ -1,7 +1,7 @@
 package com.devsuperior.dscatalog.resources;
 
 //import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 
 import com.devsuperior.dscatalog.dto.ProductDTO;
 import com.devsuperior.dscatalog.services.ProductService;
