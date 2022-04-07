@@ -12,6 +12,7 @@ rápido. Os testes de unidades são importantes para validar um componente espec
 package com.devsuperior.dscatalog.services;
 
 import com.devsuperior.dscatalog.repositories.ProductRepository;
+import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ public class ProductServiceTests {
         nonExistingId = 1000L;
         /*
         Configuro comportamentos simulados para o objeto repository mocado.
-        
+
         @Mock
         private ProductRepository repository;
 
@@ -52,7 +53,17 @@ public class ProductServiceTests {
 
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
     }
+
+    @Test
+    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExists() {
     
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            service.delete(nonExistingId);
+        });
+    
+        Mockito.verify(repository, Mockito.times(1)).deleteById(nonExistingId);
+    }
+        
     @Test
     public void deleteShouldDoNothingWhenIdExists() {
         Assertions.assertDoesNotThrow(() -> {
