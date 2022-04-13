@@ -12,6 +12,7 @@ rápido. Os testes de unidades são importantes para validar um componente espec
 package com.devsuperior.dscatalog.services;
 
 import com.devsuperior.dscatalog.repositories.ProductRepository;
+import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -35,11 +37,14 @@ public class ProductServiceTests {
 
     private long existingId;
     private long nonExistingId;
+    private long dependentId;
 
     @BeforeEach
     void setUp() throws Exception {
         existingId = 1L;
         nonExistingId = 1000L;
+        dependentId = 4L;
+
         /*
         Configuro comportamentos simulados para o objeto repository mocado.
 
@@ -52,6 +57,17 @@ public class ProductServiceTests {
         Mockito.doNothing().when(repository).deleteById(existingId);
 
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
+
+        Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
+    }
+
+    @Test
+    public void deleteShouldThrowDatabaseExceptionWhenDependentId () {
+        Assertions.assertThrows(DatabaseException.class, () -> {
+            service.delete(dependentId);
+        });
+
+        Mockito.verify(repository, Mockito.times(1)).deleteById(dependentId);
     }
 
     @Test
